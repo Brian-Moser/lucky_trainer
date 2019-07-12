@@ -1,0 +1,263 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Introduction &mdash; LuckyTrainer 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to lucky_trainer’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> LuckyTrainer
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LuckyTrainer</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Introduction</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/introduction.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>The main purpose of this project is to support other PyTorch projects by creating an easy way for training models, especially for RNN models w.r.t. CV tasks.</p>
+<p>For example, this code block below runs an experiment with GoogLeNet (implementation from PyTorch) on tiny ImageNet (with 200 classes). The train parameters are set in one dictionary (see train_params).
+This documentation will explain all keywords, the dictionary below defines an experiment without train set (skip_test), which takes 60 epochs and batch size of 128.
+It is minimizing the Cross-Entropy loss function. As an accuracy, top-1 and top-5 accuracy is reported, class_dim defines the dimension of the classes in the output tensor.
+Every keyword starting with “<a href="#id1"><span class="problematic" id="id2">opt_</span></a>” is a parameter to control the arguments of the optimizer given by PyTorch (since different optimizers can have different arguments). In this case,
+the optimizer Adam has a L2 regularization constant of 1e-4. In addition, a learn rate decay of 0.1 at epoch 20 and 40 is given.</p>
+<p>The dataset is defined in the dataset_params, where only the path is needed. However, the dataset needs to be preprocessed in a special way (already a PyTorch dataset, not wrapped in an iterator like PyTorch’s data loader).
+The next step is to wrap this dataset with a data loader.</p>
+<p>The most important step is then to define the model you want to train, in this case GoogLeNet.
+After this, you can run the experiment with the start_training function and have fun!</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="kn">as</span> <span class="nn">nn</span>
+ <span class="kn">from</span> <span class="nn">torchvision.models</span> <span class="kn">import</span> <span class="n">GoogLeNet</span>
+<span class="hll"> <span class="kn">from</span> <span class="nn">lucky_trainer.utils</span> <span class="kn">import</span> <span class="n">get_dataset</span><span class="p">,</span> <span class="n">start_training</span>
+</span>
+<span class="hll"> <span class="c1"># Parameter settings</span>
+</span> <span class="n">train_params</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="s1">&#39;skip_test&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+     <span class="s1">&#39;max_epochs&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+     <span class="s1">&#39;batch_size&#39;</span><span class="p">:</span> <span class="mi">128</span><span class="p">,</span>
+     <span class="s1">&#39;acc_metric&#39;</span><span class="p">:</span> <span class="s1">&#39;classification_1_and_5&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;class_dim&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+     <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="s1">&#39;CrossEntropyLoss&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;optimizer&#39;</span><span class="p">:</span> <span class="s1">&#39;Adam&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;opt_weight_decay&#39;</span><span class="p">:</span> <span class="mf">1e-4</span><span class="p">,</span>
+     <span class="s1">&#39;lr_decay_gamma&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+     <span class="s1">&#39;lr_decay_step_size&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span>
+ <span class="p">}</span>
+
+ <span class="c1"># Path of the datasets</span>
+ <span class="n">dataset_params</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="s1">&#39;train_filename&#39;</span><span class="p">:</span>
+         <span class="n">path_file</span> <span class="o">+</span>
+         <span class="s1">&#39;/../data/tiny_ImageNet/input_data/train_tiny_imagenet&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;validation_filename&#39;</span><span class="p">:</span>
+         <span class="n">path_file</span> <span class="o">+</span>
+         <span class="s1">&#39;/../data/tiny_ImageNet/input_data/valid_tiny_imagenet&#39;</span>
+ <span class="p">}</span>
+
+ <span class="c1"># Load iterable datasets</span>
+ <span class="n">train_loader</span> <span class="o">=</span> <span class="n">get_dataset</span><span class="p">(</span>
+     <span class="n">dataset_params</span><span class="p">[</span><span class="s1">&#39;train_filename&#39;</span><span class="p">],</span>
+     <span class="n">train_params</span><span class="p">[</span><span class="s1">&#39;batch_size&#39;</span><span class="p">]</span>
+ <span class="p">)</span>
+ <span class="n">validation_loader</span> <span class="o">=</span> <span class="n">get_dataset</span><span class="p">(</span>
+     <span class="n">dataset_params</span><span class="p">[</span><span class="s1">&#39;validation_filename&#39;</span><span class="p">],</span>
+     <span class="n">train_params</span><span class="p">[</span><span class="s1">&#39;batch_size&#39;</span><span class="p">],</span>
+     <span class="n">shuffle</span><span class="o">=</span><span class="bp">False</span>
+ <span class="p">)</span>
+
+ <span class="c1"># Model definition (with downsizing amount of classes from 1000 to 200</span>
+ <span class="n">model</span> <span class="o">=</span> <span class="n">GoogLeNet</span><span class="p">(</span><span class="n">aux_logits</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+ <span class="n">model</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+
+ <span class="c1"># Train the model</span>
+ <span class="n">start_training</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{},</span> <span class="n">train_params</span><span class="p">,</span> <span class="n">dataset_params</span><span class="p">,</span>
+                <span class="n">train_loader</span><span class="p">,</span> <span class="n">validation_loader</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
+                <span class="n">output_directory</span><span class="p">,</span> <span class="s1">&#39;Some_GoogLeNet_Experiment&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to lucky_trainer’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Brian B. Moser
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,406 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Experiments Setup &mdash; LuckyTrainer 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> LuckyTrainer
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LuckyTrainer</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Experiments Setup</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/experiments.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="experiments-setup">
+<h1>Experiments Setup<a class="headerlink" href="#experiments-setup" title="Permalink to this headline">¶</a></h1>
+<p>The main contribution of this project is the easy way of
+finding the right recurrent CV model for a given tasks
+via random search. This is mainly realized by the
+experiments setup. You have to setup two functions in the
+experiments script, tagged with ‘&#64;ex.named_config’. One
+function defines the parameters and one the dataset location.
+The dataset should be defined like the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@ex.named_config</span>
+<span class="k">def</span> <span class="nf">bidi_lstm_datasets_row</span><span class="p">():</span>    <span class="c1"># Set new function name</span>
+<span class="hll">    <span class="sd">&quot;&quot;&quot;</span>
+</span><span class="sd">    Dataset file names for BidiLSTM (row-wise).</span>
+<span class="hll"><span class="sd">    &quot;&quot;&quot;</span>
+</span>    <span class="n">dataset</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1"># Keep the key names, change the values &#39;..data/....&#39;</span>
+        <span class="s1">&#39;train_input_filename&#39;</span><span class="p">:</span>
+            <span class="s1">&#39;../data/CIFAR10/input_data/train_row_data&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;train_target_filename&#39;</span><span class="p">:</span>
+            <span class="s1">&#39;../data/CIFAR10/input_data/train_row_labels&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;validation_input_filename&#39;</span><span class="p">:</span>
+            <span class="s1">&#39;../data/CIFAR10/input_data/validation_row_data&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;validation_target_filename&#39;</span><span class="p">:</span>
+            <span class="s1">&#39;../data/CIFAR10/input_data/validation_row_labels&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;test_input_filename&#39;</span><span class="p">:</span>
+            <span class="s1">&#39;../data/CIFAR10/input_data/test_row_data&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;test_target_filename&#39;</span><span class="p">:</span>
+            <span class="s1">&#39;../data/CIFAR10/input_data/test_row_labels&#39;</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<p>According to the parameters, you also have to define a function
+with the same tag ‘&#64;ex.named_config’ and inside of the function
+you need to configure two parameter dictionaries for the experiments,
+which are the parameters for the model and the parameters
+for the training itself (for example batch size). In the end,
+you have something like:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@ex.named_config</span>
+<span class="k">def</span> <span class="nf">random_search_bidi_lstm</span><span class="p">():</span>
+<span class="hll">    <span class="sd">&quot;&quot;&quot;</span>
+</span><span class="sd">    Configuration for the BidiLSTM model.</span>
+<span class="hll"><span class="sd">    &quot;&quot;&quot;</span>
+</span>    <span class="n">model_params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="s1">&#39;bidi_lstm&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;layer_dim&#39;</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)),</span>
+        <span class="s1">&#39;hidden_dim&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s1">&#39;output_dim&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s1">&#39;dropout_rate&#39;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">}</span>
+    <span class="n">model_params</span><span class="p">[</span><span class="s1">&#39;hidden_dim&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">loguniform</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">300</span><span class="p">)))</span>
+                                  <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">model_params</span><span class="p">[</span><span class="s1">&#39;layer_dim&#39;</span><span class="p">])]</span>
+    <span class="n">model_params</span><span class="p">[</span><span class="s1">&#39;dropout_rate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">loguniform</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">0.25</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)))</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">model_params</span><span class="p">[</span><span class="s1">&#39;layer_dim&#39;</span><span class="p">])]</span>
+
+    <span class="n">train_params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;max_epochs&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+        <span class="s1">&#39;batch_size&#39;</span><span class="p">:</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="s1">&#39;early_stopping_patience&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s1">&#39;acc_metric&#39;</span><span class="p">:</span> <span class="s1">&#39;classification&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;class_dim&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;CrossEntropyLoss&#39;</span><span class="p">]),</span>
+        <span class="s1">&#39;optimizer&#39;</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;RMSprop&#39;</span><span class="p">,</span> <span class="s1">&#39;Adam&#39;</span><span class="p">,</span> <span class="s1">&#39;Adadelta&#39;</span><span class="p">]),</span>
+        <span class="s1">&#39;opt_lr&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="mi">10</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<p>The detailed description of the parameters will be explained in
+the following.</p>
+<div class="section" id="model-parameters">
+<h2>Model Parameters<a class="headerlink" href="#model-parameters" title="Permalink to this headline">¶</a></h2>
+<p>The model parameters differ for each model because of
+the architecture. Thus, you have to configure the model
+parameters individually. In the following, this
+documentation guides you through each model and tells
+you the particularities.</p>
+<div class="section" id="bidi-lstm">
+<h3>Bidi-Lstm<a class="headerlink" href="#bidi-lstm" title="Permalink to this headline">¶</a></h3>
+<p>For Bidi-LSTM, you only have 4 parameters. The ‘layer_dim’
+defines how many layers are used. The ‘output_dim’ defines
+the amount of output units. Then you have define the amount
+of units for each layer within the ‘hidden_dim’ list and
+you have to define the dropout rate after each layer within
+the ‘dropout_rate’ list. You have seen above an example
+for a random search configuration, the next code snippet
+shows you a fixed configuration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;layer_dim&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="hll">    <span class="s1">&#39;hidden_dim&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
+</span>    <span class="s1">&#39;output_dim&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+<span class="hll">    <span class="s1">&#39;dropout_rate&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
+</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="renet">
+<h3>ReNet<a class="headerlink" href="#renet" title="Permalink to this headline">¶</a></h3>
+<p>The definition of the parameters are pretty similar.
+You have two define the dropout rate for both directions
+for each ReNet Layer, which is why you have tuples instead
+of scalar values. Additionally, you have to define the window
+size (‘window_size’) and the RNN-type (‘rnn_types’),
+e.g. GRU or LSTM. In addition, ReNet uses FC-Layers, which
+is why you also have to define the amount of linear layers
+(‘linear_layer_dim’) and the amount of units in each layer
+within the list ‘linear_hidden_dim’.
+The next code snippet shows you a configuration for CIFAR10,
+extracted from the ReNet paper:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;reNet_layer_dim&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="hll">    <span class="s1">&#39;linear_layer_dim&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+</span>    <span class="s1">&#39;reNet_hidden_dim&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">320</span><span class="p">,</span> <span class="mi">320</span><span class="p">,</span> <span class="mi">320</span><span class="p">],</span>
+<span class="hll">    <span class="s1">&#39;linear_hidden_dim&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4096</span><span class="p">],</span>
+</span>    <span class="s1">&#39;dropout_rate&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)],</span>
+    <span class="s1">&#39;window_size&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="s1">&#39;rnn_types&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;GRU&quot;</span><span class="p">,</span> <span class="s2">&quot;GRU&quot;</span><span class="p">,</span> <span class="s2">&quot;GRU&quot;</span><span class="p">],</span>
+    <span class="s1">&#39;output_dim&#39;</span><span class="p">:</span> <span class="mi">10</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="convlstm">
+<h3>ConvLSTM<a class="headerlink" href="#convlstm" title="Permalink to this headline">¶</a></h3>
+<p>Again, you have to define the amount of layers
+(‘conv_layer_dim’) and the amount of units in it
+(‘conv_hidden_dim’), which also defines the amount
+of output channels. The ‘patch_size’ defines the
+size of the patches you extract from the input
+image and the ‘input_kernel_size’ is the
+input-to-state size. The last parameter
+defines the state-to-state size for each ConvLSTM
+layer.
+The following shows the best performing configuration
+extracted from the ConvLSTM paper for Moving-MNIST.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model_params</span> <span class="o">=</span> <span class="p">{</span>
+ <span class="s1">&#39;conv_layer_dim&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="hll"> <span class="s1">&#39;conv_hidden_dim&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">128</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">],</span>
+</span> <span class="s1">&#39;patch_size&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+<span class="hll"> <span class="s1">&#39;input_kernel_size&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+</span> <span class="s1">&#39;kernel_size&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="training-parameters">
+<h2>Training Parameters<a class="headerlink" href="#training-parameters" title="Permalink to this headline">¶</a></h2>
+<p>This section helps you to configure the training itself.
+The training parameters contain at least information about
+the batch size (‘batch_size’), the max. amount of
+epochs ‘max_epochs’, the loss function (‘loss’)
+and the optimizer (‘optimizer’). You can also enable
+Early Stopping by just setting the ‘early_stopping_patience’.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;max_epochs&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+<span class="hll">    <span class="s1">&#39;batch_size&#39;</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span>
+</span>    <span class="s1">&#39;early_stopping_patience&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+<span class="hll">    <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="s1">&#39;CrossEntropyImageLoss&#39;</span><span class="p">,</span>
+</span>    <span class="s1">&#39;optimizer&#39;</span><span class="p">:</span> <span class="s1">&#39;RMSprop&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="setting-up-the-optimizer">
+<h3>Setting Up the Optimizer<a class="headerlink" href="#setting-up-the-optimizer" title="Permalink to this headline">¶</a></h3>
+<p>The optimizer is defined by the training parameter
+dictionary ‘optimizer’. You can choose any optimizer
+provided by PyTorch, just use the right class name
+(see documentation of PyTorch). You probably want to
+configure your optimizer further more by setting
+up parameters like learning rate, momentum etc.
+These parameters can be also set in the training
+parameter dictionary, just use the prefix ‘opt_’
+and the parameter names defined by PyTorch.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="n">train_params</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="o">...</span><span class="p">,</span>
+<span class="hll">     <span class="s1">&#39;optimizer&#39;</span><span class="p">:</span> <span class="s1">&#39;Adam&#39;</span><span class="p">,</span>
+</span>     <span class="s1">&#39;opt_lr&#39;</span><span class="p">:</span> <span class="mf">0.0001</span><span class="p">,</span>
+<span class="hll">     <span class="s1">&#39;opt_betas&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">),</span>
+</span>     <span class="s1">&#39;opt_weight_decay&#39;</span><span class="p">:</span> <span class="mi">0</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-up-the-loss-function">
+<h3>Setting Up the Loss Function<a class="headerlink" href="#setting-up-the-loss-function" title="Permalink to this headline">¶</a></h3>
+<p>Like for the optimizer, you just have to use
+the loss function name of PyTorch. Alternatively,
+this project provides additionally loss functions
+like Cross-Entropy for images. They can be found
+in the metrics script. Feel free to add new loss
+functions for your goals, you just have to
+add them as a function in the CustomLoss class.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="k">class</span> <span class="nc">CustomLoss</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+ <span class="o">...</span>
+<span class="hll"> <span class="nd">@staticmethod</span>
+</span> <span class="k">def</span> <span class="nf">YourNewLossFunction</span><span class="p">(</span><span class="n">_input</span><span class="p">,</span> <span class="n">_target</span><span class="p">):</span>
+<span class="hll">     <span class="n">loss</span> <span class="o">=</span> <span class="o">...</span>      <span class="c1"># Insert your operations here</span>
+</span>     <span class="k">return</span> <span class="n">loss</span>
+</pre></div>
+</div>
+<p>You can find an already custom implemented loss
+function for the ConvLSTM in the script:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="k">class</span> <span class="nc">CustomLoss</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+ <span class="nd">@staticmethod</span>
+<span class="hll"> <span class="k">def</span> <span class="nf">CrossEntropyImageLoss</span><span class="p">(</span><span class="n">_input</span><span class="p">,</span> <span class="n">_target</span><span class="p">):</span>
+</span>     <span class="k">return</span> <span class="o">-</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+<span class="hll">         <span class="n">_target</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">_input</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">_target</span><span class="p">)</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">_input</span><span class="p">)</span>
+</span>     <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Brian B. Moser
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
