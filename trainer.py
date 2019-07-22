@@ -178,6 +178,7 @@ class Trainer(object):
         # If learn-rate decay is enabled
         self.lr_decay = False
         self.scheduler, self.lr_decay_step_size = None, None
+        self.lr_decay_steps = None
         self.setup_lr_decay()
 
     def train(self):
@@ -216,7 +217,8 @@ class Trainer(object):
 
             # Apply K-Fold
             for i, k in enumerate(ks_list):
-                # Config filename corresponding to the current k-cross-validation
+                # Config filename corresponding to
+                # the current k-cross-validation
                 self.filename = original_filename + "_K" + str(k+1) + "_"
 
                 # Reset values for training
@@ -234,14 +236,18 @@ class Trainer(object):
                 val_set = folds[k]
 
                 # Make a DataLoader out of them
-                train_set = torch.utils.data.DataLoader(train_set,
-                                                        batch_size=self.train_loader.batch_size,
-                                                        shuffle=True,
-                                                        num_workers=self.train_loader.num_workers)
-                val_set = torch.utils.data.DataLoader(val_set,
-                                                      batch_size=self.train_loader.batch_size,
-                                                      shuffle=False,
-                                                      num_workers=self.train_loader.num_workers)
+                train_set = torch.utils.data.DataLoader(
+                    train_set,
+                    batch_size=self.train_loader.batch_size,
+                    shuffle=True,
+                    num_workers=self.train_loader.num_workers
+                )
+                val_set = torch.utils.data.DataLoader(
+                    val_set,
+                    batch_size=self.train_loader.batch_size,
+                    shuffle=False,
+                    num_workers=self.train_loader.num_workers
+                )
 
                 # Apply one fold
                 result += np.array(self.train_one_fold(
@@ -277,10 +283,16 @@ class Trainer(object):
                 break
 
             # Learn-rate counter
-            if self.lr_decay and \
-                    (type(self.lr_decay_step_size) is int or
-                     epoch in self.lr_decay_step_size):
-                self.scheduler.step()
+            if self.lr_decay:
+                if self.lr_decay_steps is not None:
+                    if len(self.lr_decay_steps) > 0:
+                        if epoch == self.lr_decay_steps[0][0]:
+                            for params in self.optimizer.param_groups:
+                                params['lr'] = self.lr_decay_steps[0][1]
+                            del self.lr_decay_steps[0]
+                elif (type(self.lr_decay_step_size) is int
+                        or epoch in self.lr_decay_step_size):
+                    self.scheduler.step()
 
             # Train one epoch
             train_result, val_result = self.train_one_epoch(train_set, val_set)
@@ -560,6 +572,9 @@ class Trainer(object):
                     self.train_params['lr_decay_gamma']
                 )
             self.lr_decay_step_size = self.train_params['lr_decay_step_size']
+        elif 'lr_decay_steps' in self.train_params.keys():
+            self.lr_decay = True
+            self.lr_decay_steps = self.train_params['lr_decay_steps']
 
     @staticmethod
     def print_result(text_type, result, epoch):

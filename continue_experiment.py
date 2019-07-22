@@ -11,10 +11,10 @@ import os
 
 sys.path.insert(0, os.path.abspath('..'))  # noqa
 
-from src.models.bidi_lstm import BidiLSTM
+from defusernn_models.bidi_lstm import BidiLSTM
 from src.models.n_renet import N_ReNet
-from src.models.conv_lstm import ConvLSTM
-from src.models.md_lstm import MDMDLSTMModel
+from defusernn_models.conv_lstm import ConvLSTM
+from defusernn_models.md_lstm import MDMDLSTMModel
 from lucky_trainer.utils import get_dataset
 from lucky_trainer.trainer import Trainer
 

@@ -17,9 +17,9 @@ sys.path.insert(0, os.path.abspath('..'))  # noqa
 
 from lucky_trainer.utils import loguniform, get_dataset, get_partitions
 from lucky_trainer.trainer import Trainer
-from src.models.bidi_lstm import BidiLSTM
+from defusernn_models.bidi_lstm import BidiLSTM
 from src.models.n_renet import N_ReNet
-from src.models.conv_lstm import ConvLSTM
+from defusernn_models.conv_lstm import ConvLSTM
 
 # Device configuration (DO NOT EDIT)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
