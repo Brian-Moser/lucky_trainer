@@ -556,7 +556,19 @@ class Trainer(object):
         )
 
     def setup_lr_decay(self):
-        if 'lr_decay_gamma' in self.train_params.keys() and \
+        if 'lr_decay_patience' in self.train_params.keys() and \
+                'lr_decay_gamma' in self.train_params.keys():
+            threshold = 0.0001
+            if 'lr_threshold' in self.train_params.keys():
+                threshold = self.train_params['lr_threshold']
+            self.scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+                self.optimizer,
+                factor=self.train_params['lr_decay_gamma'],
+                mode='min',
+                threshold=threshold,
+                patience=self.train_params['lr_decay_patience']
+            )
+        elif 'lr_decay_gamma' in self.train_params.keys() and \
                 'lr_decay_step_size' in self.train_params.keys():
             self.lr_decay = True
             if type(self.train_params['lr_decay_step_size']) is int:
