@@ -8,8 +8,23 @@ import random
 import torch
 import torchvision.transforms as transforms
 import numpy as np
+from PIL import ImageCms
 from sklearn.feature_extraction.image import PatchExtractor
 from sklearn.decomposition import PCA
+
+
+class rbg2lab(object):
+    def __init__(self):
+        pass
+
+    def __call__(self, img):
+        srgb_profile = ImageCms.createProfile("sRGB")
+        lab_profile = ImageCms.createProfile("LAB")
+
+        rgb2lab_transform = ImageCms.buildTransformFromOpenProfiles(srgb_profile, lab_profile, "RGB", "LAB")
+        lab_im = ImageCms.applyTransform(img, rgb2lab_transform)
+
+        return lab_im
 
 
 class RandomHorizontalOrVerticalFlip(object):
