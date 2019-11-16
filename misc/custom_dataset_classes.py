@@ -414,20 +414,20 @@ class ImageHTHFixedDataset(Dataset):
         """
         return len(self.img_path_input)
 
-    class H5Dataset(torch.utils.data.Dataset):
-        def __init__(self, in_file, transform):
-            import h5py
 
-            self.file = h5py.File(in_file, 'r')
-            self.n_images, _, _, _ = self.file['images'].shape
-            self.transform = transform
+class H5Dataset(Dataset):
+    def __init__(self, in_file, transform):
+        import h5py
+        self.file = h5py.File(in_file, 'r')
+        self.n_images, _, _, _ = self.file['images'].shape
+        self.transform = transform
 
-        def __getitem__(self, index):
-            input = self.file['images'][index, :, :, :]
-            return self.transform(input.astype('float32')), self.file['labels'][index, :]
+    def __getitem__(self, index):
+        input = self.file['images'][index, :, :, :]
+        return self.transform(input.astype('float32')), self.file['labels'][index, :]
 
-        def __len__(self):
-            return self.n_images
+    def __len__(self):
+        return self.n_images
 
     @staticmethod
     def flip(x, dim):
