@@ -401,7 +401,6 @@ class Trainer(object):
             # Load input and target to device (like GPU)
             _input = _input.to(self.device)
             _target = _target.to(self.device)
-            print(_target.shape)
 
             # Count amount of images
             total += _target.size(0)
@@ -411,7 +410,6 @@ class Trainer(object):
 
             # Calculate output
             outputs = self.model(_input)
-            print(outputs.shape)
 
             # Calculate Loss
             # Backpropagation through time
