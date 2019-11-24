@@ -25,6 +25,25 @@ from lucky_trainer.misc.metrics import get_accuracy_metric, CustomLoss
 from lucky_trainer.early_stopper import EarlyStopper
 
 
+def plot_grad_flow(named_parameters, title, t):
+    import matplotlib.pyplot as plt
+    ave_grads = []
+    layers = []
+    for n, p in named_parameters:
+        if(p.requires_grad) and ("bias" not in n):
+            layers.append(n)
+            ave_grads.append(p.grad.abs().mean().cpu().data[0])
+    plt.plot(ave_grads, alpha=0.3, color="b")
+    plt.hlines(0, 0, len(ave_grads)+1, linewidth=1, color="k" )
+    plt.xticks(range(0,len(ave_grads), 1), layers, rotation="vertical")
+    plt.xlim(xmin=0, xmax=len(ave_grads))
+    plt.xlabel("Layers")
+    plt.ylabel("sum of gradient")
+    plt.title(title)
+    plt.grid(True)
+    plt.savefig('check' + str(t) + '.jpg')
+
+
 class Trainer(object):
     """
     Class, which manages the training of the model. The main benefit of this
@@ -397,6 +416,7 @@ class Trainer(object):
         loss_total, total, sum_correct = 0, 0, 0
         pbar = tqdm(train_set, leave=False,
                     file=sys.stdout, ascii=True)
+        t = 0
         for _input, _target in pbar:
             # Load input and target to device (like GPU)
             _input = _input.to(self.device)
@@ -447,6 +467,9 @@ class Trainer(object):
             # (see https://arxiv.org/pdf/1211.5063.pdf)
             if self.clip_grad_norm:
                 nn.utils.clip_grad_norm_(self.model.parameters(), 1)
+
+            plot_grad_flow(self.model.named_parameters(), "Gradient Flow normal", t)
+            t+=1
 
             # Updating parameters
             self.optimizer.step()
