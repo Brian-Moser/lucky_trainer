@@ -25,28 +25,6 @@ from lucky_trainer.misc.metrics import get_accuracy_metric, CustomLoss
 from lucky_trainer.early_stopper import EarlyStopper
 
 
-def plot_grad_flow(named_parameters, title, t):
-    import matplotlib.pyplot as plt
-    ave_grads = []
-    layers = []
-    for n, p in named_parameters:
-        if(p.requires_grad) and ("bias" not in n):
-            try:
-                ave_grads.append(p.grad.abs().mean().cpu().data.item())
-                layers.append(n)
-            except:
-                pass
-    plt.plot(ave_grads, alpha=0.3, color="b")
-    plt.hlines(0, 0, len(ave_grads)+1, linewidth=1, color="k" )
-    plt.xticks(range(0,len(ave_grads), 1), layers, rotation="vertical")
-    plt.xlim(xmin=0, xmax=len(ave_grads))
-    plt.xlabel("Layers")
-    plt.ylabel("sum of gradient")
-    plt.title(title)
-    plt.grid(True)
-    plt.savefig('check' + str(t) + '.jpg')
-
-
 class Trainer(object):
     """
     Class, which manages the training of the model. The main benefit of this
@@ -60,7 +38,7 @@ class Trainer(object):
                  print_param_size=True, clip_grad_norm=True,
                  print_progress=True, checkpoint_patience=-1,
                  checkpoint_epoch_notation=True, save_whole_model=False,
-                 use_cudnn_benchmark=True):
+                 use_cudnn_benchmark=True, optimizer=None):
         """
         Initialization of the Trainer.
 
@@ -156,7 +134,10 @@ class Trainer(object):
         self.opt = getattr(torch.optim, train_params['optimizer'])
         # Creates optimizer with parameters given in params and a prefix "opt_"
         # E.g. "opt_lr": 0.0001 item will be the parameter lr=0.0001
-        self.optimizer = self.init_optimizer()
+        if optimizer is None:
+            self.optimizer = self.init_optimizer()
+        else:
+            self.optimizer = optimizer
 
         # Early Stopping
         self.enable_early_stopping = False
@@ -419,7 +400,6 @@ class Trainer(object):
         loss_total, total, sum_correct = 0, 0, 0
         pbar = tqdm(train_set, leave=False,
                     file=sys.stdout, ascii=True)
-        t = 0
         for _input, _target in pbar:
             # Load input and target to device (like GPU)
             _input = _input.to(self.device)
@@ -470,9 +450,6 @@ class Trainer(object):
             # (see https://arxiv.org/pdf/1211.5063.pdf)
             if self.clip_grad_norm:
                 nn.utils.clip_grad_norm_(self.model.parameters(), 1)
-
-            plot_grad_flow(self.model.named_parameters(), "Gradient Flow normal", t)
-            t+=1
 
             # Updating parameters
             self.optimizer.step()
