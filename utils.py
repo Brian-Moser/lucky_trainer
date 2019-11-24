@@ -98,7 +98,7 @@ def loguniform(low=0, high=1, size=None):
     return np.exp(np.random.uniform(low, high, size))
 
 
-def get_dataset(filename, batch_size, shuffle=True, training=True, pin_memory=False, num_workers=2):
+def get_dataset(filename, batch_size, shuffle=True, training=True, pin_memory=True, num_workers=2):
     """
     Returns an iterable dataset.
 
