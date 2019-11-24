@@ -31,11 +31,8 @@ def plot_grad_flow(named_parameters, title, t):
     layers = []
     for n, p in named_parameters:
         if(p.requires_grad) and ("bias" not in n):
-            try:
-                ave_grads.append(p.grad.abs().mean().cpu().data[0])
-                layers.append(n)
-            except:
-                pass
+            ave_grads.append(p.grad.abs().mean().cpu().data.item())
+            layers.append(n)
     plt.plot(ave_grads, alpha=0.3, color="b")
     plt.hlines(0, 0, len(ave_grads)+1, linewidth=1, color="k" )
     plt.xticks(range(0,len(ave_grads), 1), layers, rotation="vertical")
