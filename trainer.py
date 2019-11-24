@@ -410,7 +410,6 @@ class Trainer(object):
 
             # Calculate output
             outputs = self.model(_input)
-            print(outputs.shape)
 
             # Calculate Loss
             # Backpropagation through time
