@@ -424,7 +424,7 @@ class H5Dataset(Dataset):
 
     def __getitem__(self, index):
         input = self.file['images'][index, :, :, :]
-        print(self.file['labels'][index].shape)
+        print(self.file['labels'][index][0].shape)
         return self.transform(input.astype('float32')), self.file['labels'][index]
 
     def __len__(self):
