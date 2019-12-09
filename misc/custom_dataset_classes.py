@@ -426,13 +426,13 @@ class H5Dataset(Dataset):
         self.transform = transform
 
     def __getitem__(self, index):
-        labels = self.labels[index]
-        input = self.images[index]
-        #with h5py.File(self.in_file, 'r') as f:
+        #labels = self.labels[index]
+        #input = self.images[index]
+        with h5py.File(self.in_file, 'r') as f:
         #    self.labels = f['labels'][:]
         #    self.images = f['images'][:]
-            #input = f['images'][index]
-            #labels = f['labels'][index]
+            input = f['images'][index]
+            labels = f['labels'][index]
         return self.transform(input.astype('float32')), np.array(labels.item(), dtype=np.int64)
 
     def __len__(self):
