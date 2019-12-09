@@ -428,7 +428,7 @@ class H5Dataset(Dataset):
     def __getitem__(self, index):
         #labels = self.labels[index]
         #input = self.images[index]
-        with h5py.File(self.in_file, 'r') as f:
+        with self.f as f:
         #    self.labels = f['labels'][:]
         #    self.images = f['images'][:]
             input = f['images'][index]
