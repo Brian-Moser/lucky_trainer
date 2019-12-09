@@ -426,7 +426,7 @@ class H5Dataset(Dataset):
         self.transform = transform
 
     def __getitem__(self, index):
-        with h5py.File(in_file, 'r') as f:
+        with h5py.File(self.in_file, 'r') as f:
             #self.labels = f['labels'][:]
             #self.images = f['images'][:]
             input = f['images'][index]
