@@ -418,10 +418,10 @@ class ImageHTHFixedDataset(Dataset):
 
 class H5Dataset(Dataset):
     def __init__(self, in_file, transform):
-        with h5py.File(in_file, 'r') as f:
-            self.labels = f['labels']
-            self.images = f['images']
-            self.n_images, _, _, _ = f['images'].shape
+        self.f = h5py.File(in_file, 'r')
+        self.labels = self.f['labels']
+        self.images = self.f['images']
+        self.n_images, _, _, _ = self.f['images'].shape
         #self.in_file = in_file
         self.transform = transform
 
