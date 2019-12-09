@@ -6,6 +6,7 @@
 
 from torch.utils.data import Dataset
 import numpy as np
+import h5py
 import random
 import torch
 import math
@@ -417,16 +418,20 @@ class ImageHTHFixedDataset(Dataset):
 
 class H5Dataset(Dataset):
     def __init__(self, in_file, transform):
-        import h5py
         with h5py.File(in_file, 'r') as f:
-            self.labels = f['labels'][:]
-            self.images = f['images'][:]
-        self.n_images, _, _, _ = self.images.shape
+            #self.labels = f['labels'][:]
+            #self.images = f['images'][:]
+            self.n_images, _, _, _ = f['images'].shape
+        self.in_file = in_file
         self.transform = transform
 
     def __getitem__(self, index):
-        input = self.images[index, :, :, :]
-        return self.transform(input.astype('float32')), np.array(self.labels[index].item(), dtype=np.int64)
+        with h5py.File(in_file, 'r') as f:
+            #self.labels = f['labels'][:]
+            #self.images = f['images'][:]
+            input = f['images'][index]
+            labels = f['labels'][index]
+        return self.transform(input.astype('float32')), np.array(labels.item(), dtype=np.int64)
 
     def __len__(self):
         return self.n_images
