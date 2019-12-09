@@ -418,7 +418,6 @@ class ImageHTHFixedDataset(Dataset):
 class H5Dataset(Dataset):
     def __init__(self, in_file, transform):
         import h5py
-        #self.file = h5py.File(in_file, 'r')
         with h5py.File(in_file, 'r') as f:
             self.labels = f['labels'][:]
             self.images = f['images'][:]
@@ -427,8 +426,7 @@ class H5Dataset(Dataset):
 
     def __getitem__(self, index):
         input = self.images[index, :, :, :]
-        print(self.labels[index], self.labels[index].item())
-        return self.transform(input.astype('float32')), np.array(self.labels[index].item(0), dtype=np.int64)
+        return self.transform(input.astype('float32')), np.array(self.labels[index].item(), dtype=np.int64)
 
     def __len__(self):
         return self.n_images
