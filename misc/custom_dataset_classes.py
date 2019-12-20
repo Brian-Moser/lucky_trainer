@@ -423,7 +423,7 @@ class H5Dataset(Dataset):
         #self.labels = self.f['labels']
         #self.images = self.f['images']
         self.n_images, _, _, _ = self.f['images'].shape
-        #f.close()
+        self.f.close()
         self.in_file = in_file
         self.transform = transform
 
@@ -435,7 +435,7 @@ class H5Dataset(Dataset):
         #    self.images = f['images'][:]
             input = f['images'][index]
             labels = f['labels'][index]
-            print(self.f['labels'][index].value, labels)
+            print(labels)
         return self.transform(input.astype('float32')), np.array(labels.item(), dtype=np.int64)
 
     def __len__(self):
