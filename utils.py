@@ -98,7 +98,7 @@ def loguniform(low=0, high=1, size=None):
     return np.exp(np.random.uniform(low, high, size))
 
 
-def get_dataset(filename, batch_size, shuffle=True, training=True, pin_memory=True, num_workers=2, random_subset=1):
+def get_dataset(filename, batch_size, shuffle=True, training=True, pin_memory=True, num_workers=2, random_subset=1.0):
     """
     Returns an iterable dataset.
 
@@ -119,7 +119,7 @@ def get_dataset(filename, batch_size, shuffle=True, training=True, pin_memory=Tr
                                          shuffle=shuffle,
                                          sampler=torch.utils.data.sampler.SubsetRandomSampler(
                                              list(range(random_subset*len(ds)))
-                                         ) if random_subset < 1 else None,
+                                         ) if random_subset < 1.0 else None,
                                          pin_memory=pin_memory,
                                          num_workers=num_workers if training else 0)
     return loader
