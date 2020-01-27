@@ -118,7 +118,7 @@ def get_dataset(filename, batch_size, shuffle=True, training=True, pin_memory=Tr
                                          batch_size=batch_size,
                                          shuffle=shuffle,
                                          sampler=torch.utils.data.sampler.SubsetRandomSampler(
-                                             list(range(random_subset*len(ds)))
+                                             list(range(int(random_subset*len(ds))))
                                          ) if random_subset < 1.0 else None,
                                          pin_memory=pin_memory,
                                          num_workers=num_workers if training else 0)
