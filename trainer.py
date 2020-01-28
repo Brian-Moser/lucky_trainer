@@ -21,6 +21,7 @@ from early_stopper import EarlyStopper
 # train_one_epoch commented out
 # save_progress has a return None
 # calculate_loss_and_acc outputs=_target
+# self.device changed
 
 
 class Trainer(object):
@@ -370,8 +371,8 @@ class Trainer(object):
             total = 0
             sum_correct = 0
             for _input, _target in loader:
-                _target = _target.to(self.device)
-                _input = _input.to(self.device)
+                _target = _target.cuda()
+                _input = _input.cuda()
 
                 outputs = _target#self.model(_input)
                 if self.enable_aux_training:
