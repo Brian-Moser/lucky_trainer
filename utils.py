@@ -12,9 +12,7 @@ import pickle
 from torch.utils.data import Dataset
 from copy import deepcopy
 
-sys.path.insert(0, os.path.abspath('..'))   # noqa
-
-from lucky_trainer.trainer import Trainer
+from trainer import Trainer
 
 
 def flip(x, dim):

@@ -5,16 +5,7 @@
 #  Contact: Brian.Moser@DFKI.de
 
 from copy import deepcopy
-import inspect
 import torch
-import sys
-import os
-
-path_file = os.path.abspath(
-    os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-)  # noqa
-
-sys.path.insert(0, path_file + '/..')  # noqa
 
 
 class EarlyStopper(object):
