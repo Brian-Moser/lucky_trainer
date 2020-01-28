@@ -291,7 +291,7 @@ class Trainer(object):
                     self.scheduler.step()
 
             # Train one epoch
-            train_result, val_result = [[0, 1], [2, 3]]#self.train_one_epoch(train_set, val_set)
+            train_result, val_result = self.train_one_epoch(train_set, val_set)
 
             # Print result of one epoch
             self.print_result('train', train_result, epoch)
