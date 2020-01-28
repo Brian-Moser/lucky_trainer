@@ -12,17 +12,10 @@ import numpy as np
 import random
 from tqdm import tqdm
 import torch.nn as nn
-import inspect
 from copy import deepcopy
 
-path_file = os.path.abspath(
-    os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-)  # noqa
-
-sys.path.insert(0, path_file + '/..')  # noqa
-
-from lucky_trainer.misc.metrics import get_accuracy_metric, CustomLoss
-from lucky_trainer.early_stopper import EarlyStopper
+from misc.metrics import get_accuracy_metric, CustomLoss
+from early_stopper import EarlyStopper
 
 
 class Trainer(object):
