@@ -291,7 +291,7 @@ class Trainer(object):
                     self.scheduler.step()
 
             # Train one epoch
-            train_result, val_result = self.train_one_epoch(train_set, val_set)
+            train_result, val_result = [[0, 1], [2, 3]]#self.train_one_epoch(train_set, val_set)
 
             # Print result of one epoch
             self.print_result('train', train_result, epoch)
@@ -391,7 +391,8 @@ class Trainer(object):
         # Train Phase
         self.model.train()
         loss_total, total, sum_correct = 0, 0, 0
-        pbar = tqdm(train_set, leave=False, ascii=True)
+        pbar = tqdm(train_set, leave=False,
+                    file=sys.stdout, ascii=True)
         for _input, _target in pbar:
             # Load input and target to device (like GPU)
             _input = _input.to(self.device)
