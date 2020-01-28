@@ -79,7 +79,7 @@ class EarlyStopper(object):
             self.correspondingTrainScore = train_loss
             if torch.cuda.is_available():
                 self.bestModelState = deepcopy(self.model.cpu().state_dict())
-                self.model.to(self.trainer.device)
+                self.model.cuda()
             else:
                 self.bestModelState = deepcopy(self.model.state_dict())
             self.bestOptimizerState = self.optimizer.state_dict()
@@ -90,7 +90,7 @@ class EarlyStopper(object):
             self.correspondingTrainScore = train_loss
             if torch.cuda.is_available():
                 self.bestModelState = self.model.cpu().state_dict()
-                self.model.to(self.trainer.device)
+                self.model.cuda()
             else:
                 self.bestModelState = self.model.state_dict()
             self.bestOptimizerState = self.optimizer.state_dict()

@@ -21,7 +21,7 @@ from early_stopper import EarlyStopper
 # train_one_epoch commented out
 # save_progress has a return None
 # calculate_loss_and_acc outputs=_target
-# self.device changed to cuda()
+# self.device changed to cuda(), also in early_stopper
 
 
 class Trainer(object):
