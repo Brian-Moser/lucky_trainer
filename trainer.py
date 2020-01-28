@@ -14,7 +14,7 @@ from tqdm import tqdm
 import torch.nn as nn
 from copy import deepcopy
 
-from misc.metrics import get_accuracy_metric, CustomLoss
+from metrics import get_accuracy_metric, CustomLoss
 from early_stopper import EarlyStopper
 
 
