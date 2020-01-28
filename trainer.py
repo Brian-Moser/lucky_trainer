@@ -21,7 +21,7 @@ from early_stopper import EarlyStopper
 # train_one_epoch commented out
 # save_progress has a return None
 # calculate_loss_and_acc outputs=_target
-# self.device changed
+# self.device changed to cuda()
 
 
 class Trainer(object):
@@ -104,10 +104,10 @@ class Trainer(object):
         self.checkpoint_patience = checkpoint_patience
 
         # Send to model to GPU, if enabled
-        self.device = torch.device('cuda'
-                                   if torch.cuda.is_available()
-                                   else 'cpu')
-        self.model = model.to(self.device)
+        #self.device = torch.device('cuda'
+        #                           if torch.cuda.is_available()
+        #                           else 'cpu')
+        self.model = model.cuda()
 
         # Initialization of the model
         if 'init' in train_params.keys():
@@ -374,7 +374,7 @@ class Trainer(object):
                 _target = _target.cuda()
                 _input = _input.cuda()
 
-                outputs = _target#self.model(_input)
+                outputs = self.model(_input)
                 if self.enable_aux_training:
                     outputs = outputs[0]
                 total += _target.size(0)
