@@ -391,8 +391,7 @@ class Trainer(object):
         # Train Phase
         self.model.train()
         loss_total, total, sum_correct = 0, 0, 0
-        pbar = tqdm(train_set, leave=False,
-                    file=sys.stdout, ascii=True)
+        pbar = tqdm(train_set, leave=False, ascii=True)
         for _input, _target in pbar:
             # Load input and target to device (like GPU)
             _input = _input.to(self.device)
