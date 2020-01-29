@@ -18,12 +18,6 @@ from metrics import get_accuracy_metric, CustomLoss
 from early_stopper import EarlyStopper
 
 
-# train_one_epoch commented out
-# save_progress has a return None
-# calculate_loss_and_acc outputs=_target
-# self.device changed to cuda(), also in early_stopper
-
-
 class Trainer(object):
     """
     Class, which manages the training of the model. The main benefit of this
@@ -104,10 +98,10 @@ class Trainer(object):
         self.checkpoint_patience = checkpoint_patience
 
         # Send to model to GPU, if enabled
-        #self.device = torch.device('cuda'
-        #                           if torch.cuda.is_available()
-        #                           else 'cpu')
-        self.model = model.cuda()
+        self.device = torch.device('cuda'
+                                   if torch.cuda.is_available()
+                                   else 'cpu')
+        self.model = model.to(self.device)
 
         # Initialization of the model
         if 'init' in train_params.keys():
@@ -297,7 +291,7 @@ class Trainer(object):
                     self.scheduler.step()
 
             # Train one epoch
-            train_result, val_result = [[0, 1], [1, 2]]#self.train_one_epoch(train_set, val_set)
+            train_result, val_result = self.train_one_epoch(train_set, val_set)
 
             # Print result of one epoch
             self.print_result('train', train_result, epoch)
@@ -371,8 +365,8 @@ class Trainer(object):
             total = 0
             sum_correct = 0
             for _input, _target in loader:
-                _target = _target.cuda()
-                _input = _input.cuda()
+                _target = _target.to(self.device)
+                _input = _input.to(self.device)
 
                 outputs = self.model(_input)
                 if self.enable_aux_training:
@@ -508,8 +502,6 @@ class Trainer(object):
         """
         # Loading the results and the states of the training (model and
         # optimizer state).
-
-        return None
 
         model_state, optimizer_state = self.get_state_dict()
         if self.enable_early_stopping:
