@@ -12,6 +12,7 @@ from torch.utils.data import Dataset
 from copy import deepcopy
 
 from trainer import Trainer
+from custom_dataset_classes import CachedDataset
 
 
 def flip(x, dim):
@@ -111,7 +112,8 @@ def get_dataset(filename, batch_size, shuffle=True, training=True, pin_memory=Tr
     infile = open(os.path.abspath(filename), 'rb')
     ds = pickle.load(infile)
     infile.close()
-    loader = torch.utils.data.DataLoader(dataset=ds,
+
+    loader = torch.utils.data.DataLoader(dataset=CachedDataset(ds),
                                          batch_size=batch_size,
                                          shuffle=shuffle,
                                          sampler=torch.utils.data.sampler.SubsetRandomSampler(

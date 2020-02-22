@@ -14,6 +14,24 @@ from PIL import Image
 from PIL import ImageOps
 import torchvision.transforms as transforms
 import torchvision.transforms.functional as F
+from multiprocessing import Manager
+from torch.utils.data import Dataset
+
+
+class CachedDataset(Dataset):
+    def __init__(self, dataset):
+        self.manager = Manager()
+        self.shared_dict = self.manager.dict()
+        self.dataset = dataset
+
+    def __getitem__(self, index):
+        if index not in self.shared_dict:
+            print('Adding {} to shared_dict'.format(index))
+            self.shared_dict[index] = self.dataset[index]
+        return self.shared_dict[index]
+
+    def __len__(self):
+        return (self.dataset)
 
 
 class CustomDatasetWithTransform(Dataset):
