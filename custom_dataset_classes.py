@@ -31,7 +31,7 @@ class CachedDataset(Dataset):
         return self.shared_dict[index]
 
     def __len__(self):
-        return (self.dataset)
+        return len(self.dataset)
 
 
 class CustomDatasetWithTransform(Dataset):
