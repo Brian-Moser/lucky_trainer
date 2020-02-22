@@ -26,7 +26,6 @@ class CachedDataset(Dataset):
 
     def __getitem__(self, index):
         if index not in self.shared_dict:
-            print('Adding {} to shared_dict'.format(index))
             self.shared_dict[index] = self.dataset[index]
         return self.shared_dict[index]
 
