@@ -14,8 +14,8 @@ from tqdm import tqdm
 import torch.nn as nn
 from copy import deepcopy
 
-from metrics import get_accuracy_metric, CustomLoss
-from early_stopper import EarlyStopper
+from lucky_trainer.metrics import get_accuracy_metric, CustomLoss
+from lucky_trainer.early_stopper import EarlyStopper
 
 
 class Trainer(object):

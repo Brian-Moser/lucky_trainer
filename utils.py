@@ -5,14 +5,15 @@
 #  Contact: Brian.Moser@DFKI.de
 
 import os
+import sys
 import torch
 import numpy as np
 import pickle
 from torch.utils.data import Dataset
 from copy import deepcopy
 
-from trainer import Trainer
-from custom_dataset_classes import CachedDataset
+from lucky_trainer.trainer import Trainer
+from lucky_trainer.custom_dataset_classes import CachedDataset
 
 
 def flip(x, dim):
