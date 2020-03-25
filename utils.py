@@ -114,7 +114,7 @@ def get_dataset(filename, batch_size, shuffle=True, training=True, pin_memory=Tr
     ds = pickle.load(infile)
     infile.close()
 
-    loader = torch.utils.data.DataLoader(dataset=CachedDataset(ds),
+    loader = torch.utils.data.DataLoader(dataset=ds, #CachedDataset(ds),
                                          batch_size=batch_size,
                                          shuffle=shuffle,
                                          sampler=torch.utils.data.sampler.SubsetRandomSampler(

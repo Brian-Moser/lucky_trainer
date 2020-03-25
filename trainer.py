@@ -101,7 +101,12 @@ class Trainer(object):
         self.device = torch.device('cuda'
                                    if torch.cuda.is_available()
                                    else 'cpu')
-        self.model = model.to(self.device)
+        self.model = model
+        if 'multi_gpu' in train_params.keys():
+            if train_params['multi_gpu']:
+                self.model = nn.DataParallel(self.model)
+        self.model = self.model.to(self.device)
+
 
         # Initialization of the model
         if 'init' in train_params.keys():
