@@ -507,26 +507,21 @@ class Trainer(object):
         """
         # Loading the results and the states of the training (model and
         # optimizer state).
+        self.model.cpu()
 
-        model_state, optimizer_state = self.get_state_dict()
-        if self.enable_early_stopping:
-            epoch = self.early_stopping.get_results()['epochs']
-        else:
-            epoch = self.current_epoch
+        model_state, optimizer_state = self.model.state_dict(), self.optimizer.state_dict()
 
         # Saving the whole model.
         if self.save_whole_model:
             save_dict = {
-                'model': self.model.cpu(),
+                'model': self.model,
                 'train_params': self.train_params,
                 'dataset_params': self.dataset_params,
                 'history': self.history,
                 'model_state': model_state,
                 'optimizer_state': optimizer_state,
-                'epoch': epoch + 1
             }
             file_name += "_wholeModel_"
-            self.model.to(self.device)
         # Saving just the weights and the params to build the model.
         else:
             save_dict = {
@@ -536,7 +531,6 @@ class Trainer(object):
                 'history': self.history,
                 'model_state': model_state,
                 'optimizer_state': optimizer_state,
-                'epoch': epoch + 1
             }
 
         # Actual saving process
@@ -548,6 +542,7 @@ class Trainer(object):
                    + "_" + self.start_time
                    + ".pth")
         print("Saved.")
+        self.model.to(self.device)
 
     def init_optimizer(self):
         return self.opt(
